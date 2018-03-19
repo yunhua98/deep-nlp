@@ -1,10 +1,12 @@
 labels = []
 with open("./data/100_split_pos/pos10.csv", "r") as f:
+# with open("./data/100_split_pos/pos1.csv", "r") as f:
     for label in f.readlines():
         labels.append(label.strip())
 
 predictions = []
-with open("./results/predictions/pos10_largetrain_smalltest1.csv", "r") as f:
+with open("./results/predictions/pos10_largetrain_smalltest_3ngram_hard.csv", "r") as f:
+# with open("./results/predictions/pos1.csv", "r") as f:
     for label in f.readlines():
         predictions.append(label.strip())
 
