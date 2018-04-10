@@ -10,13 +10,18 @@ with open("./chunking/train_ngrams5.csv", "r") as f:
     for ngram in f.readlines():
         ngrams.append(ngram)
 
+str_train_labels = []
+with open("./chunking/train_labels.csv", "r") as f:
+    for label in f.readlines():
+        str_train_labels.append(label)
+
 str_labels = []
 with open("./chunking/train_labels.csv", "r") as f:
     for label in f.readlines():
         str_labels.append(label)
 
 lb = LabelBinarizer()
-lb.fit(str_labels)
+lb.fit(str_train_labels)
 labels = np.empty((len(str_labels), lb.classes_.size))
 for i, label in enumerate(lb.transform(str_labels)):
     for j, el in enumerate(label):

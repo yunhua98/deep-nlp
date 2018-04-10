@@ -13,9 +13,10 @@ import os
 # labels = np.load("./data/10_split_labels/labels0.npy")
 # features = np.load("./data/features.npy")
 # labels = np.load("./data/labels.npy")
-features = np.load("./data/10_split_features/features0.npy")
-labels = np.load("./data/labels0_shuffled.npy")
-
+# features = np.load("./data/10_split_features/features0.npy")
+# labels = np.load("./data/labels0_shuffled.npy")
+features = np.load("./chunking/features5.npy")
+labels = np.load("./chunking/labels.npy")
 
 # set up model
 model = Sequential([
@@ -30,7 +31,8 @@ model = Sequential([
     # Activation("hard_sigmoid"),
     Dropout(0.2),
     # output layer
-    Dense(34),
+    # Dense(34), # POS
+    Dense(21), # Chunking
     Activation("softmax")
     # Activation("relu"),
     # Activation("hard_sigmoid")
@@ -41,13 +43,13 @@ model.compile(loss="categorical_crossentropy", optimizer=adamax)
 
 # save model structure
 model_struct = model.to_json()
-fmod_struct = open(os.path.join("./data", "pos_model_25val.json"), "wb")
+fmod_struct = open(os.path.join("./chunking", "chunking_model.json"), "wb")
 fmod_struct.write(model_struct.encode())
 fmod_struct.close()
 
 # train model
-checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_shuffled",
-    "shuffled_pos_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
+checkpoint = ModelCheckpoint(os.path.join("./chunking", "checkpoints",
+    "chunking_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
     monitor="val_loss", save_best_only=True, mode="min")
 # checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_large",
 #     "large_pos_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
