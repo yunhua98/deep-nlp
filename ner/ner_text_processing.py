@@ -2,6 +2,7 @@ import csv
 from collections import deque
 
 filename = "ner_dataset.csv"
+# Dataset from https://www.kaggle.com/abhinavwalia95/entity-annotated-corpus/data
 
 sentences = []
 pos = []
