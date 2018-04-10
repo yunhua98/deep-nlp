@@ -11,8 +11,11 @@ import os
 # labels = np.load("./data/100_split_labels/labels0.npy")
 # features = np.load("./data/10_split_features3/features0.npy")
 # labels = np.load("./data/10_split_labels/labels0.npy")
-features = np.load("./data/features.npy")
-labels = np.load("./data/labels.npy")
+# features = np.load("./data/features.npy")
+# labels = np.load("./data/labels.npy")
+features = np.load("./data/10_split_features/features0.npy")
+labels = np.load("./data/labels0_shuffled.npy")
+
 
 # set up model
 model = Sequential([
@@ -43,12 +46,12 @@ fmod_struct.write(model_struct.encode())
 fmod_struct.close()
 
 # train model
-# checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_small",
-#     "small_pos_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
-#     monitor="val_loss", save_best_only=True, mode="min")
-checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_large",
-    "large_pos_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
+checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_shuffled",
+    "shuffled_pos_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
     monitor="val_loss", save_best_only=True, mode="min")
+# checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_large",
+#     "large_pos_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
+#     monitor="val_loss", save_best_only=True, mode="min")
 hist = model.fit(features, labels, batch_size=128, nb_epoch=50, shuffle=True,
                  validation_split=0.25, callbacks=[checkpoint])
 
