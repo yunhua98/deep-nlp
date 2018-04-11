@@ -3,20 +3,21 @@ import numpy as np
 from sklearn.preprocessing import LabelBinarizer
 
 # model = gensim.models.Word2Vec.load("./features/brown100.model")
-model = gensim.models.Word2Vec.load("./chunking/conll2000.model")
+# model = gensim.models.Word2Vec.load("./chunking/conll2000.model")
+model = gensim.models.Word2Vec.load("./ner/conll2002.model")
 
 ngrams = []
-with open("./chunking/train_ngrams5.csv", "r") as f:
+with open("./ner/ngrams5.csv", "r") as f:
     for ngram in f.readlines():
         ngrams.append(ngram)
 
 str_train_labels = []
-with open("./chunking/train_labels.csv", "r") as f:
+with open("./ner/ner_labels.csv", "r") as f:
     for label in f.readlines():
         str_train_labels.append(label)
 
 str_labels = []
-with open("./chunking/train_labels.csv", "r") as f:
+with open("./ner/ner_labels.csv", "r") as f:
     for label in f.readlines():
         str_labels.append(label)
 
@@ -41,5 +42,5 @@ for instance, ngram in enumerate(ngrams):
             for j in range(100):
                 features[instance, i * 100 + j] = model.wv[word][j]
 
-np.save("./chunking/features5.npy", features)
-np.save("./chunking/labels.npy", labels)
+np.save("./ner/features5.npy", features)
+np.save("./ner/ner_labels.npy", labels)
