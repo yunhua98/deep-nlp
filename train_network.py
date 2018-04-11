@@ -3,6 +3,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import Adamax
 from keras.regularizers import l2
+from sklearn.preprocessing import LabelEncoder
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -20,10 +21,26 @@ import os
 features = np.load("./ner/train_features5.npy")
 labels = np.load("./ner/train_ner_labels.npy")
 
+### STUFF FOR AUGMENTING NER WITH POS FEATURES
+
+# create label lookup tool
+str_labels = []
+with open("./ner/pos_labels.csv", "r") as f:
+    for label in f.readlines():
+        str_labels.append(label.strip())
+
+le = LabelEncoder()
+le.fit(str_labels)
+
+pos_labels = le.transform(str_labels)[:features.shape[0]]
+features = np.column_stack((features, pos_labels))
+
+### END STUFF
+
 # set up model
 model = Sequential([
     # input layer
-    Dense(128, input_shape=(500,), W_regularizer=l2(0.001)),
+    Dense(128, input_shape=(501,), W_regularizer=l2(0.001)),
     Activation("relu"),
     # Activation("hard_sigmoid"),
     Dropout(0.2),
@@ -51,7 +68,7 @@ fmod_struct.write(model_struct.encode())
 fmod_struct.close()
 
 # train model
-checkpoint = ModelCheckpoint(os.path.join("./ner", "checkpoints_split",
+checkpoint = ModelCheckpoint(os.path.join("./ner", "checkpoints_augmented",
     "ner_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
     monitor="val_loss", save_best_only=True, mode="min")
 # checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_large",
