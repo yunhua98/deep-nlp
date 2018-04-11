@@ -18,7 +18,7 @@ model = model_from_json(model_json)
 # model.load_weights(os.path.join("./data/checkpoints_hard_sig3", "large_pos_weights.28-1.15.hdf5"))
 # model.load_weights(os.path.join("./data/checkpoints_large", "large_pos_weights.36-0.28.hdf5"))
 # model.load_weights(os.path.join("./chunking/checkpoints", "chunking_weights.19-0.34.hdf5"))
-model.load_weights(os.path.join("./ner/checkpoints", "ner_weights.44-0.17.hdf5"))
+model.load_weights(os.path.join("./ner/checkpoints_split", "ner_weights.45-0.17.hdf5"))
 adamax = Adamax(lr=0.002, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
 model.compile(loss="categorical_crossentropy", optimizer=adamax)
 
@@ -33,7 +33,7 @@ le.fit(str_labels)
 
 # predict
 # test_data = np.load("./data/100_split_features/features0.npy")
-test_data = np.load("./ner/features5.npy")
+test_data = np.load("./ner/test_features5.npy")
 
 one_hot_predictions = model.predict(test_data)
 predictions = []
@@ -42,6 +42,6 @@ for prediction in one_hot_predictions:
 
 predicted_labels = le.inverse_transform(predictions)
 
-with open("./results/predictions/ner_train_predictions_5gram.csv", "w") as file:
+with open("./results/predictions/ner_test_split_predictions_5gram.csv", "w") as file:
     wr = csv.writer(file, delimiter="\n", quoting=csv.QUOTE_NONE)
     wr.writerow(predicted_labels)

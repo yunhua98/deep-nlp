@@ -17,8 +17,8 @@ import os
 # labels = np.load("./data/labels0_shuffled.npy")
 # features = np.load("./chunking/features5.npy")
 # labels = np.load("./chunking/labels.npy")
-features = np.load("./ner/features5.npy")
-labels = np.load("./ner/ner_labels.npy")
+features = np.load("./ner/train_features5.npy")
+labels = np.load("./ner/train_ner_labels.npy")
 
 # set up model
 model = Sequential([
@@ -51,7 +51,7 @@ fmod_struct.write(model_struct.encode())
 fmod_struct.close()
 
 # train model
-checkpoint = ModelCheckpoint(os.path.join("./ner", "checkpoints",
+checkpoint = ModelCheckpoint(os.path.join("./ner", "checkpoints_split",
     "ner_weights.{epoch:02d}-{val_loss:.2f}.hdf5"), 
     monitor="val_loss", save_best_only=True, mode="min")
 # checkpoint = ModelCheckpoint(os.path.join("./data", "checkpoints_large",
